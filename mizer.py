@@ -22,10 +22,12 @@ def create_python_project(project_name):
     project_dir = path + "/" + str(project_name)
     try:
          os.mkdir(project_dir)
-         os.chdir(project_dir)
+         #os.chdir(project_dir)
+         subprocess.run(["cd",project_dir])
+         virtual_environment = str(project_name+"-env")
+         subprocess.run(["virtualenv",virtual_environment])
+         subprocess.run(["source",virtual_environment+"/bin/activate"])
          create_executable_script("main")
-         subprocess.run(["virtualenv", "env"])
-
     except:
         print("project folder already exists")
         print("choose a different project name or navigate to that project folder")
