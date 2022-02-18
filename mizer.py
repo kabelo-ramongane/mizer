@@ -28,6 +28,7 @@ def create_executable_script(script_name):
 def create_python_project(project_name):
     path = os.getcwd()
     project_dir = path + "/" + str(project_name)
+    
     try:
          os.mkdir(project_dir)
          os.chdir(project_dir)
