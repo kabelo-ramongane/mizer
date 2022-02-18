@@ -7,17 +7,22 @@ import argparse
 
 """create an executable script in the current directory"""
 def create_executable_script(script_name):
+    
     file_name = str(script_name + ".py")
-    f = open(file_name, "w+")
-    f.write("#!/usr/bin/env python3")
-    f.write("\n")
-    f.write("print(\"hello world\")\n")
-    f.close()
 
-    #grant full permissions
-    os.chmod(file_name, 0o777)
+    if os.path.isfile(file_name):
+        print("file with that name already exists in the current directory")
+    else:
+        f = open(file_name, "w+")
+        f.write("#!/usr/bin/env python3")
+        f.write("\n\n")
+        f.write("print(\"hello world\")\n")
+        f.close()
 
-    return f
+        #grant full permissions
+        os.chmod(file_name, 0o777)
+
+        return file_name
 
 """create a project folder in the current directory"""
 def create_python_project(project_name):
@@ -26,14 +31,11 @@ def create_python_project(project_name):
     try:
          os.mkdir(project_dir)
          os.chdir(project_dir)
-         print("project directory: " + project_dir)
-         #subprocess.run(["cd",project_dir])
-         virtual_environment = str(project_name+"-env")
-         subprocess.run(["virtualenv",virtual_environment])
-         subprocess.run(["source",virtual_environment+"/bin/activate"])
          script_file = create_executable_script("main")
-         subprocess.run(["mv", script_file, project_dir])
-    except:
+         virtual_environment = str(project_name+"-env")
+         subprocess.run(["virtualenv",virtual_environment],stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT) #suppress virtualenv output
+         
+    except  FileExistsError:
         print("project folder already exists")
         print("choose a different project name or navigate to that project folder")
 
